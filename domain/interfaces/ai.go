@@ -5,11 +5,13 @@ import (
 	"context"
 )
 
-// AI представляет интерфейс для работы с AI моделью
-type AI interface {
-	// DecideNextAction принимает решение о следующем действии на основе контекста
-	DecideNextAction(ctx context.Context, task string, pageInfo entities.PageInfo, history []entities.AgentResponse) (entities.AgentResponse, error)
+// AIService defines the interface for AI decision making
+type AIService interface {
+	// DecideNextAction decides what action to take next based on task and context
+	// Returns nil if task is complete or cannot proceed
+	DecideNextAction(ctx context.Context, task *entities.Task, pageInfo *entities.PageInfo, history []entities.Action) (*entities.Action, error)
 	
-	// AnalyzePage анализирует страницу и извлекает ключевую информацию
-	AnalyzePage(ctx context.Context, pageInfo entities.PageInfo, task string) (string, error)
+	// AnalyzePage analyzes the page and extracts relevant information
+	AnalyzePage(ctx context.Context, pageInfo *entities.PageInfo, task *entities.Task) (string, error)
 }
+

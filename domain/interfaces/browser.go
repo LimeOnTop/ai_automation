@@ -5,47 +5,42 @@ import (
 	"context"
 )
 
-// Browser представляет интерфейс для управления браузером
-type Browser interface {
-	// Navigate переходит по URL
+// BrowserController defines the interface for browser automation
+type BrowserController interface {
+	// Navigate navigates to a URL
 	Navigate(ctx context.Context, url string) error
 	
-	// GetPageInfo получает информацию о текущей странице
-	GetPageInfo(ctx context.Context) (entities.PageInfo, error)
-	
-	// Click кликает на элемент по селектору
+	// Click clicks on an element by selector
 	Click(ctx context.Context, selector string) error
 	
-	// Type вводит текст в элемент
-	Type(ctx context.Context, selector string, text string) error
+	// TypeText types text into an element
+	TypeText(ctx context.Context, selector string, text string) error
 	
-	// WaitForElement ждёт появления элемента
-	WaitForElement(ctx context.Context, selector string) error
+	// ExtractPageInfo extracts structured information from the current page
+	ExtractPageInfo(ctx context.Context) (*entities.PageInfo, error)
 	
-	// GetElements получает все интерактивные элементы на странице
-	GetElements(ctx context.Context) ([]entities.PageElement, error)
+	// Wait waits for a condition or time
+	Wait(ctx context.Context, condition string, timeout int) error
 	
-	// GetTextContent получает текстовое содержимое страницы
-	GetTextContent(ctx context.Context) (string, error)
+	// Scroll scrolls the page
+	Scroll(ctx context.Context, direction string, amount int) error
 	
-	// Screenshot делает скриншот страницы
-	Screenshot(ctx context.Context, path string) error
+	// GetCurrentURL returns the current page URL
+	GetCurrentURL(ctx context.Context) (string, error)
 	
-	// SaveState сохраняет состояние браузера (cookies, localStorage)
-	SaveState() error
+	// GetPageTitle returns the current page title
+	GetPageTitle(ctx context.Context) (string, error)
 	
-	// OpenNewTab открывает новую вкладку и переключается на неё
-	OpenNewTab(ctx context.Context, url string) error
+	// TakeScreenshot takes a screenshot
+	TakeScreenshot(ctx context.Context) ([]byte, error)
 	
-	// SwitchToTab переключается на вкладку по индексу (0 - первая вкладка)
-	SwitchToTab(index int) error
-	
-	// GetTabsCount возвращает количество открытых вкладок
-	GetTabsCount() int
-	
-	// GetCurrentTabIndex возвращает индекс текущей активной вкладки
-	GetCurrentTabIndex() int
-	
-	// Close закрывает браузер
+	// Close closes the browser
 	Close() error
+	
+	// IsElementVisible checks if an element is visible
+	IsElementVisible(ctx context.Context, selector string) (bool, error)
+	
+	// FindElementsByText finds elements containing specific text
+	FindElementsByText(ctx context.Context, text string) ([]entities.PageElement, error)
 }
+

@@ -1,8 +1,4 @@
 .env
 *.log
 .DS_Store
-playwright-browsers/
-browser-state/
-.browser_state/
-agent
-*.exe
+vendor/
